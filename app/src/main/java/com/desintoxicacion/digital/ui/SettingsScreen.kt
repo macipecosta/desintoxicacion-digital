@@ -283,7 +283,7 @@ private class ProfileForm(p: Profile) {
         return try {
             if (dcCode.trim().length !in 4..8) throw IllegalArgumentException("El código de activación debe tener entre 4 y 8 cifras.")
             if (birth.isNotBlank()) try { LocalDate.parse(birth.trim()) } catch (e: Exception) {
-                throw IllegalArgumentException("La fecha de nacimiento tiene que ser como 1987-08-04.")
+                throw IllegalArgumentException("La fecha de nacimiento tiene que ser como 1990-01-31.")
             }
             base.copy(
                 dayStartMinute = time(dayStart, "Hora de inicio del día"),
