@@ -5,7 +5,10 @@ plugins {
 }
 
 // Dirección de la web de Apps Script. Se puede pasar al compilar: -PserverUrl=https://script.google.com/...
-val serverUrl: String = (project.findProperty("serverUrl") as String?) ?: System.getenv("SERVER_URL") ?: ""
+val defaultServerUrl = "https://script.google.com/macros/s/AKfycbzCThD-vfyH-y6Ghi2VRXYczbg8Wq3OsThCKVr9h_3dTSQmgc8p4x7C8l74w5KmH2-P/exec"
+val serverUrl: String = (project.findProperty("serverUrl") as String?)
+    ?: System.getenv("SERVER_URL")?.takeIf { it.isNotBlank() }
+    ?: defaultServerUrl
 
 // Firma fija para que las actualizaciones se instalen encima sin perder datos.
 // En GitHub la clave llega por variables de entorno (secretos); en local se usa la de depuración.
