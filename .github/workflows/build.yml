@@ -25,8 +25,12 @@ jobs:
         env:
           KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
         run: |
-          echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/release.jks"
-          echo "KEYSTORE_PATH=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
+          if [ -n "$KEYSTORE_B64" ]; then
+            echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/release.jks"
+            echo "KEYSTORE_PATH=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
+          else
+            echo "Sin clave de firma: se compila de prueba y no se publica."
+          fi
           echo "VERSION_CODE=$(( ${{ github.run_number }} + 2 ))" >> "$GITHUB_ENV"
 
       - name: Compilar
@@ -44,6 +48,7 @@ jobs:
           path: desintoxicacion-digital.apk
 
       - name: Publicar versión
+        if: env.KEYSTORE_PATH != ''
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
